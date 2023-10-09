@@ -1,17 +1,29 @@
-FROM python:3.8
-
-# Set environment variables  
-ENV PYTHONDONTWRITEBYTECODE 1  
-ENV PYTHONUNBUFFERED 1  
-
-WORKDIR ./app
-
-COPY . .
-
-# Install dependencies  
-RUN pip install --upgrade pip  
-RUN pip install -r requirements.txt  
-
-CMD ["gunicorn", "-w", "3", "-b", ":8000", "-t", "360", "--reload", "wsgi:app"]
-
-
+# Fetching official base image for python    
+FROM python:3.9-alpine as web    
+    
+# Setting up the work directory    
+WORKDIR /home/app/    
+    
+# Preventing python from writing pyc to docker container    
+ENV PYTHONDONTWRITEBYTECODE 1    
+    
+# Flushing out python buffer    
+ENV PYTHONUNBUFFERED 1    
+    
+# Updating the os and installing dependencies    
+RUN apk update && \    
+    apk add --no-cache gcc musl-dev && \    
+    pip install --upgrade pip && \    
+    pip install gunicorn    
+    
+# Copying requirement file    
+COPY ./requirements.txt ./    
+    
+# Installing dependencies    
+RUN pip install -r ./requirements.txt    
+    
+# Copying all the files in our project    
+COPY . .    
+  
+# Starting Gunicorn    
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "--reload", "app.wsgi:application"]  

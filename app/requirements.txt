@@ -1,7 +1,7 @@
-Django==3.2.7
-django-crispy-forms==1.13.0
-django-environ==0.4.5
-django-extensions==3.1.3
-django-filter==2.4.0
-django-rest-framework==3.12.4
-psycopg2-binary==2.9.1
+django-environ
+asgiref==3.5.2
+backports.zoneinfo==0.2.1
+Django==4.1.2
+django-environ==0.9.0 # This
+psycopg2-binary==2.9.4
+sqlparse==0.4.3

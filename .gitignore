@@ -13,3 +13,6 @@ dist/
 
 # Ignore .env file
 .env
+
+# Database
+data/
