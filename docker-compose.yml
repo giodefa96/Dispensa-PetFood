@@ -14,28 +14,28 @@ services:
     ports:
       - 5432:5432  
   
-  mongo:  
-    image: mongo  
-    ports:  
-      - 27017:27017
-    networks:
-      - dispensaPetFood-network
-    volumes:  
-      - ./data/mongo:/data/db
-    environment:  
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}  
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+  #mongo:  
+  #  image: mongo  
+  #  ports:  
+  #    - 27017:27017
+  #  networks:
+  #    - dispensaPetFood-network
+  #  volumes:  
+  #    - ./data/mongo:/data/db
+  #  environment:  
+  #    MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}  
+  #    MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
 
-  frontend:
-    build: ./frontend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    ports:
-      - 3000:3000
-    environment:
-      - NODE_ENV=development
-    command: ["npm", "start"]
+  #frontend:
+  #  build: ./frontend
+  #  volumes:
+  #    - ./frontend:/app
+  #    - /app/node_modules
+  #  ports:
+  #    - 3000:3000
+  #  environment:
+  #    - NODE_ENV=development
+  #  command: ["npm", "start"]
     
   #celery:  
   #  build: .  
@@ -53,30 +53,30 @@ services:
   #    - rabbimqServer  
   #    - redis  
 
-  rabbimqServer:
-    container_name: rabbitmqServer
-    image: rabbitmq:3-management-alpine
-    hostname: rabbitmqServer
-    ports:
-      - "15672:15672"
-      - "5672:5672"
-    environment:
-      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
-    networks:
-      - dispensaPetFood-network
-  
-  redis:  
-    image: redis  
-    networks:
-      - dispensaPetFood-network
-    ports:  
-      - 6379:6379
-    environment:  
-      REDIS_HOST: ${REDIS_HOST}  
-      REDIS_PORT: ${REDIS_PORT}  
-      REDIS_DB: ${REDIS_DB}
+  #rabbimqServer:
+  #  container_name: rabbitmqServer
+  #  image: rabbitmq:3-management-alpine
+  #  hostname: rabbitmqServer
+  #  ports:
+  #    - "15672:15672"
+  #    - "5672:5672"
+  #  environment:
+  #    RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+  #    RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+  #    RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+  #  networks:
+  #    - dispensaPetFood-network
+  #
+  #redis:  
+  #  image: redis  
+  #  networks:
+  #    - dispensaPetFood-network
+  #  ports:  
+  #    - 6379:6379
+  #  environment:  
+  #    REDIS_HOST: ${REDIS_HOST}  
+  #    REDIS_PORT: ${REDIS_PORT}  
+  #    REDIS_DB: ${REDIS_DB}
   
   nginx:  
     build: ./nginx  
@@ -96,19 +96,17 @@ services:
     command:  sh -c "python manage.py makemigrations &&  
                      python manage.py migrate &&  
                      python manage.py collectstatic --noinput &&
-                     python manage.py startapp dispensa_pet_food &&  
-                     gunicorn app.wsgi:application --bind 0.0.0.0:8000"  
+                     gunicorn app.wsgi:application --bind 0.0.0.0:8000 --reload"
     volumes:  
       - static_volume:/home/app/app/staticfiles  
       - media_volume:/home/app/app/mediafiles
-      - ./app:/app:rw 
-      - ./app/dispensa_pet_food/:/app/dispensa_pet_food/:rw
-      - ./app/app:/app/app:rw 
+      - ./app/:/app/:rw
     depends_on:  
       - db  
-      - mongo  
-      - rabbimqServer  
-      - redis  
+    #  - mongo  
+    #  - rabbimqServer  
+    #  - redis  
+    container_name: dispensaPetFood-app
     networks:
       - dispensaPetFood-network
     expose:   

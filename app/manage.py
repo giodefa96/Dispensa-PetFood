@@ -15,6 +15,11 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+    except ModuleNotFoundError:
+        print("No module named 'django'")
+        print("Please install django using the following command:")
+        print("pip install django")
+        sys.exit(1)
     execute_from_command_line(sys.argv)
 
 

@@ -40,6 +40,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "dispensa_pet_food",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
