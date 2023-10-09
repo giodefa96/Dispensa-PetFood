@@ -25,7 +25,18 @@ services:
     environment:  
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}  
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-  
+
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+    command: ["npm", "start"]
+    
   #celery:  
   #  build: .  
   #  command: celery -A app worker --loglevel=info  
@@ -84,11 +95,15 @@ services:
     build: ./app  
     command:  sh -c "python manage.py makemigrations &&  
                      python manage.py migrate &&  
-                     python manage.py collectstatic --noinput &&  
+                     python manage.py collectstatic --noinput &&
+                     python manage.py startapp dispensa_pet_food &&  
                      gunicorn app.wsgi:application --bind 0.0.0.0:8000"  
     volumes:  
       - static_volume:/home/app/app/staticfiles  
-      - media_volume:/home/app/app/mediafiles  
+      - media_volume:/home/app/app/mediafiles
+      - ./app:/app:rw 
+      - ./app/dispensa_pet_food/:/app/dispensa_pet_food/:rw
+      - ./app/app:/app/app:rw 
     depends_on:  
       - db  
       - mongo  
