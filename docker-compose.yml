@@ -83,8 +83,8 @@ services:
     ports:  
       - 1337:80  
     volumes:  
-      - static_volume:/home/app/web/staticfiles  
-      - media_volume:/home/app/web/mediafiles  
+      - static_volume:/app/staticfiles/
+      - media_volume:/app/mediafiles/  
     networks:
       - dispensaPetFood-network
     depends_on:  
@@ -98,8 +98,8 @@ services:
                      python manage.py collectstatic --noinput &&
                      gunicorn app.wsgi:application --bind 0.0.0.0:8000 --reload"
     volumes:  
-      - static_volume:/home/app/app/staticfiles  
-      - media_volume:/home/app/app/mediafiles
+      - static_volume:/app/staticfiles/
+      - media_volume:/app/mediafiles/  
       - ./app/:/app/:rw
     depends_on:  
       - db  
