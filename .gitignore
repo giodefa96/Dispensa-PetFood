@@ -16,3 +16,10 @@ dist/
 
 # Database
 data/
+
+server/mediafiles/
+server/staticfiles/
+```
+
+# add to .gitignore all .pyc files
+*.pyc
