@@ -1,14 +1,20 @@
-from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
+from .models import PetProduct
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class PetProductSerializer(serializers.ModelSerializer):
+    my_discount = serializers.SerializerMethodField(read_only=True)
     class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'groups']
-
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Group
-        fields = ['url', 'name']
+        model = PetProduct
+        fields = [
+            'title',
+            'content',
+            'price',
+            "sale_price",
+            "my_discount"
+        ]
+    def get_my_discount(self, obj):
+        try:
+            return obj.get_discount()
+        except:
+            return None

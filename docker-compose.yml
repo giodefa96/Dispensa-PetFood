@@ -68,19 +68,19 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}  
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
 
-  rabbimqServer:
-    container_name: rabbitmqServer
-    image: rabbitmq:3-management-alpine
-    hostname: rabbitmqServer
-    ports:
-      - "15672:15672"
-      - "5672:5672"
-    environment:
-      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
-    networks:
-      - dispensaPetFood-network
+  #rabbimqServer:
+  #  container_name: rabbitmqServer
+  #  image: rabbitmq:3-management-alpine
+  #  hostname: rabbitmqServer
+  #  ports:
+  #    - "15672:15672"
+  #    - "5672:5672"
+  #  environment:
+  #    RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+  #    RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+  #    RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+  #  networks:
+  #    - dispensaPetFood-network
 
   nginx:  
     build: ./nginx  
@@ -121,20 +121,20 @@ services:
       - 8000  
     restart: "on-failure"  
 
-  jobber:
-    build:
-      context: jobber
-      dockerfile: Dockerfile
-    volumes:
-      - ./jobber:/jobber
-    depends_on:
-      - db
-      - mongo
-      - rabbimqServer
-    networks:
-      - dispensaPetFood-network
-    ports:
-      - 8001:8000
+  #jobber:
+  #  build:
+  #    context: jobber
+  #    dockerfile: Dockerfile
+  #  volumes:
+  #    - ./jobber:/jobber
+  #  depends_on:
+  #    - db
+  #    - mongo
+  #    - rabbimqServer
+  #  networks:
+  #    - dispensaPetFood-network
+  #  ports:
+  #    - 8001:8000
 
 volumes:  
   postgres_data:  

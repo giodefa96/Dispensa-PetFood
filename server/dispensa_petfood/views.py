@@ -1,22 +1,27 @@
-from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
-from rest_framework import permissions
-from dispensa_petfood.serializers import UserSerializer, GroupSerializer
+import json
+from django.forms.models import model_to_dict
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from dispensa_petfood.models import PetProduct
+from dispensa_petfood.serializers import PetProductSerializer
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+@api_view(["POST"])
+def api_home(request, *args, **kwargs):
+    print("ciao!" , flush=True)
+    serializer = PetProductSerializer(request.data)
+    if serializer.is_valid():
+        instance = serializer.save()
+        print(instance, flush=True)
+        return Response(instance)
 
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# Testing API
+@api_view(["GET"])
+def test_api(request, *args, **kwargs):
+    data = {
+        "name": "Api Test",
+        "content": "Success!"
+    }
+    return Response(data)
