@@ -4,10 +4,12 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import authentication, generics, mixins, permissions
 
-from dispensa_petfood.models import PetProduct
-from dispensa_petfood.permissions import IsStaffEditorPermission
-from dispensa_petfood.serializers import PetProductSerializer
-from dispensa_petfood.authentication import TokenAuthentication
+from api.authentication import TokenAuthentication
+
+from .models import PetProduct
+from .permissions import IsStaffEditorPermission
+from .serializers import PetProductSerializer
+
 
 
 class ProductDetailAPIView(generics.RetrieveAPIView):
@@ -20,7 +22,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = PetProduct.objects.all()
     serializer_class = PetProductSerializer
     authentication_classes = [authentication.SessionAuthentication,
-                              authentication.TokenAuthentication]
+                              TokenAuthentication]
     permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
     
     def perform_create(self, serializer):
