@@ -141,7 +141,18 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
 
+auth_classes = [
+    "rest_framework.authentication.SessionAuthentication",
+    "api.authentication.TokenAuthentication"
+    ]
+if DEBUG: 
+    auth_classes = [
+        "api.authentication.TokenAuthentication"
+        ]
+
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    "DEFAULT_AUTHENTICATION_CLASSES": auth_classes,
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+        ],
 }

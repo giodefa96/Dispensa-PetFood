@@ -7,7 +7,7 @@ from rest_framework import authentication, generics, mixins, permissions
 from api.authentication import TokenAuthentication
 
 from .models import PetProduct
-from .permissions import IsStaffEditorPermission
+from ..api.permissions import IsStaffEditorPermission
 from .serializers import PetProductSerializer
 
 
@@ -21,8 +21,6 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = PetProduct.objects.all()
     serializer_class = PetProductSerializer
-    authentication_classes = [authentication.SessionAuthentication,
-                              TokenAuthentication]
     permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
     
     def perform_create(self, serializer):
