@@ -2,7 +2,7 @@
 FROM python:3.9-alpine as web    
     
 # Setting up the work directory    
-WORKDIR /app    
+WORKDIR /server    
     
 # Preventing python from writing pyc to docker container    
 ENV PYTHONDONTWRITEBYTECODE 1    

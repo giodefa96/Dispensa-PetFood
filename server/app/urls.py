@@ -6,5 +6,6 @@ from django.contrib import admin
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/", include("api.urls")),
     path('dispensa_pet_food/', include('dispensa_petfood.urls')),
-]
+] 

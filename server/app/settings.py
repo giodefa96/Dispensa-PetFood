@@ -40,14 +40,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "dispensa_petfood",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'rest_framework'
+    'rest_framework',
+    'rest_framework.authtoken',
+    "dispensa_petfood",
+    "api"
 ]
 
 MIDDLEWARE = [
