@@ -1,28 +1,27 @@
 import json
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import authentication, generics, mixins, permissions
+from rest_framework import generics, mixins
 
-from api.authentication import TokenAuthentication
+from api.mixins import StaffEditorPermissionMixin
 
 from .models import PetProduct
-from ..api.permissions import IsStaffEditorPermission
+
 from .serializers import PetProductSerializer
 
 
 
-class ProductDetailAPIView(generics.RetrieveAPIView):
+class ProductDetailAPIView(StaffEditorPermissionMixin,
+                           generics.RetrieveAPIView):
     queryset = PetProduct.objects.all()
     serializer_class = PetProductSerializer
     # lookup_field = "id" # slug, id, pk, uuid
 
 
-class ProductListCreateAPIView(generics.ListCreateAPIView):
+class ProductListCreateAPIView(StaffEditorPermissionMixin,
+                               generics.ListCreateAPIView):
     queryset = PetProduct.objects.all()
     serializer_class = PetProductSerializer
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
-    
+
     def perform_create(self, serializer):
         print(serializer.validated_data, flush=True)
         title = serializer.validated_data.get("title")
@@ -35,7 +34,8 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
 product_create_api_view = ProductListCreateAPIView.as_view()
 
 
-class ProductUpdateAPIView(generics.UpdateAPIView):
+class ProductUpdateAPIView(StaffEditorPermissionMixin,
+                           generics.UpdateAPIView):
     queryset = PetProduct.objects.all()
     serializer_class = PetProductSerializer
 
@@ -48,7 +48,8 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
 product_update_api_view = ProductUpdateAPIView.as_view()
 
 
-class ProductDeleteAPIView(generics.DestroyAPIView):
+class ProductDeleteAPIView(StaffEditorPermissionMixin,
+                           generics.DestroyAPIView):
     queryset = PetProduct.objects.all()
     serializer_class = PetProductSerializer
     
@@ -59,7 +60,8 @@ class ProductDeleteAPIView(generics.DestroyAPIView):
 product_delete_api_view = ProductDeleteAPIView.as_view()
 
 
-class ProductListAPIView(generics.ListAPIView):
+class ProductListAPIView(StaffEditorPermissionMixin,
+                         generics.ListAPIView):
     queryset = PetProduct.objects.all()
     serializer_class = PetProductSerializer
 
@@ -67,6 +69,7 @@ product_list_api_view = ProductListAPIView.as_view()
 
 
 class ProductMixAPIView(
+    StaffEditorPermissionMixin,
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,

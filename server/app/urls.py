@@ -7,5 +7,6 @@ from django.contrib import admin
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
-    path('dispensa_pet_food/', include('dispensa_petfood.urls')),
+    path('api/dispensa_pet_food/', include('dispensa_petfood.urls')),
+    path('api/v2/', include('app.routers'))
 ] 
