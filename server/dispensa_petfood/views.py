@@ -4,8 +4,9 @@ from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model  
 
-from .models import Pet, PetProduct
-from .serializers import UserSerializer, PetSerializer, PetProductSerializer
+from .models import Pet, PetProduct, Diet, Meal
+from .serializers import UserSerializer, PetSerializer, PetProductSerializer, DietSerializer, MealSerializer
+
 
 class UserList(generics.ListCreateAPIView):    
     serializer_class = UserSerializer    
@@ -25,6 +26,11 @@ class UserDetail(generics.RetrieveAPIView):
 class PetList(generics.ListCreateAPIView):
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
+    authentication_classes = [TokenAuthentication]    
+    permission_classes = [permissions.IsAuthenticated] 
+    
+    def perform_create(self, serializer):  
+        serializer.save(user=self.request.user)  
 
 class PetDetail(generics.RetrieveAPIView):
     queryset = Pet.objects.all()
@@ -45,3 +51,12 @@ class ProductUpdate(generics.UpdateAPIView):
 class ProductDelete(generics.DestroyAPIView):
     queryset = PetProduct.objects.all()
     serializer_class = PetProductSerializer
+
+
+class DietCreate(generics.CreateAPIView):
+    queryset = Diet.objects.all()
+    serializer_class = DietSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(pet=self.request.user.pet)
+
