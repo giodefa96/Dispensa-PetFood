@@ -2,24 +2,21 @@ from rest_framework import generics, permissions
 from rest_framework.authentication import TokenAuthentication  
 
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model  
 
 from .models import Pet, PetProduct
 from .serializers import UserSerializer, PetSerializer, PetProductSerializer
 
-
-class UserList(generics.ListCreateAPIView):  
-    queryset = User.objects.all()  
-    serializer_class = UserSerializer  
-    authentication_classes = [TokenAuthentication]  
-
-    def get_permissions(self):
-        if self.request.method == 'POST':
-            # Allow any user (authenticated or not) to create a new user
-            return [permissions.AllowAny()]
-        else:
-            # Only allow authenticated users to list users
-            return [permissions.IsAuthenticated()]
-
+class UserList(generics.ListCreateAPIView):    
+    serializer_class = UserSerializer    
+    authentication_classes = [TokenAuthentication]    
+    permission_classes = [permissions.IsAuthenticated]  
+  
+    def get_queryset(self):  
+        user = self.request.user  
+        if user.is_staff:  
+            return get_user_model().objects.all()  
+        return get_user_model().objects.filter(id=user.id) 
 
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
