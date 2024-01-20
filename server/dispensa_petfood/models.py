@@ -6,6 +6,7 @@ User = settings.AUTH_USER_MODEL # auth.User
 
 
 class Pet(models.Model):  
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  
     name = models.CharField(max_length=200)  
     type = models.CharField(max_length=200)  
     breed = models.CharField(max_length=200)  

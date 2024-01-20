@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path('auth/', obtain_auth_token),
-    path('test/', views.test_api),
+    path('test/', views.test_api), 
     path('dispensa_pet_food/', include('dispensa_petfood.urls')),
     ] 

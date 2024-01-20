@@ -3,6 +3,7 @@ from rest_framework.reverse import reverse
 from django.contrib.auth.models import User
 from .models import Pet, PetProduct, Diet, Meal
 
+
 class UserSerializer(serializers.ModelSerializer):
     
     password = serializers.CharField(write_only=True)
@@ -10,28 +11,31 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'password']
+        
+        
+class PetSerializer(serializers.ModelSerializer):  
+    class Meta:  
+        model = Pet  
+        fields = ['id', 'name', 'type', 'breed', 'age', 'weight', 'special_care']
+  
+    def create(self, validated_data):  
+        # Pop the user from validated_data and create the Pet with the remaining data  
+        user = validated_data.pop('user')  
+        pet = Pet.objects.create(user=user, **validated_data)  
+        pet.save()  
+        return pet   
 
-class PetSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    class Meta:
-        model = Pet
-        fields = ['id', 'user', 'name', 'type']
 
-class PetProductSerializer(serializers.ModelSerializer):
-    pet = PetSerializer(read_only=True)
-    url = serializers.HyperlinkedIdentityField(
-        view_name='product-detail',
-        lookup_field='pk'
-    )
-    class Meta:
-        model = PetProduct
-        fields = ['id', 'pet', 'name', 'price', 'url']
+class PetProductSerializer(serializers.ModelSerializer):  
+    class Meta:  
+        model = PetProduct  
+        fields = ['id', 'name', 'price', 'description', 'quantity_in_stock']  
         
 
 class MealSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Meal
-        fields = ['food', 'quantity', 'feeding_time', 'diet', 'product']
+    class Meta:  
+        model = Meal  
+        fields = ['product', 'quantity', 'feeding_time', 'diet']
 
     def create(self, validated_data):
         product = validated_data.get('product')
