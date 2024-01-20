@@ -47,7 +47,7 @@ class MealSerializer(serializers.ModelSerializer):
 
 class DietSerializer(serializers.ModelSerializer):
     meals = MealSerializer(many=True)
-
+    pet = PetSerializer(read_only=True)  
     class Meta:
         model = Diet
         fields = ['pet', 'meals']
@@ -58,4 +58,3 @@ class DietSerializer(serializers.ModelSerializer):
         for meal_data in meals_data:
             Meal.objects.create(diet=diet, **meal_data)
         return diet
-
