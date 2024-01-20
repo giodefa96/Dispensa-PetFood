@@ -9,10 +9,10 @@ ENV PYTHONDONTWRITEBYTECODE 1
     
 # Flushing out python buffer    
 ENV PYTHONUNBUFFERED 1    
-    
+
 # Updating the os and installing dependencies    
-RUN apk update && \    
-    apk add --no-cache gcc musl-dev && \    
+RUN apk update && \
+    apk add --no-cache gcc musl-dev libffi-dev && \
     pip install --upgrade pip
     
 # Copying requirement file    
@@ -23,6 +23,6 @@ RUN pip install -r ./requirements.txt
     
 # Copying all the files in our project    
 COPY . .    
-  
+    
 # Starting Gunicorn    
 #CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "--reload", "app.wsgi:application"]  

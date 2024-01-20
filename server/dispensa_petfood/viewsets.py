@@ -14,7 +14,7 @@ class PetProductViewSet(viewsets.ModelViewSet):
     """
     queryset = PetProduct.objects.all()
     serializer_class = PetProductSerializer
-    lockup_field = 'pk'
+    lookup_field = 'pk'
 
 
 class ProductGenericViewSet(mixins.ListModelMixin,
@@ -22,8 +22,4 @@ class ProductGenericViewSet(mixins.ListModelMixin,
                             viewsets.GenericViewSet):
     queryset = PetProduct.objects.all()
     serializer_class = PetProductSerializer
-    lockup_field = 'pk'
-
-
-#product_list_api_view = ProductGenericViewSet.as_view({"get": "list"})
-#product_product_detail_view = ProductGenericViewSet.as_view({"get": "retrieve"})
+    lookup_field = 'pk'
