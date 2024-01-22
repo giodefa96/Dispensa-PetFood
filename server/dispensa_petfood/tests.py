@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import Pet, PetProduct
+from .models.models import Pet, PetProduct
 
 class PetTests(APITestCase):
     @classmethod

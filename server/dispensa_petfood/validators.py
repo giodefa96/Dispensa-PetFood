@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from .models import PetProduct
+from .models.pet_product import PetProduct
 
 #def validate_title(value):
 #    qs = PetProduct.objects.filter(title__iexact=value)

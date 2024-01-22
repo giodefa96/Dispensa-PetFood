@@ -4,7 +4,9 @@ from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model  
 
-from .models import Pet, PetProduct, Diet, Meal
+from .models.pet_product import PetProduct
+from .models.pet import Pet
+from .models.diet import Diet, Meal
 from .serializers import UserSerializer, PetSerializer, PetProductSerializer, DietSerializer, MealSerializer
 
 

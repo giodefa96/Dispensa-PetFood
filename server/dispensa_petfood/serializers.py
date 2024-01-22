@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 from django.contrib.auth.models import User
-from .models import Pet, PetProduct, Diet, Meal
+from .models.pet import Pet
+from .models.pet_product import PetProduct
+from .models.diet import Diet, Meal
 
 
 class UserSerializer(serializers.ModelSerializer):

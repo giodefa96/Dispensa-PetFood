@@ -1,6 +1,6 @@
 from rest_framework import viewsets, mixins
 
-from .models import PetProduct
+from .models.pet_product import PetProduct
 from .serializers import PetProductSerializer
 
 
